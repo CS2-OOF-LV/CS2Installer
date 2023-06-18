@@ -1,0 +1,1 @@
+start "" "CS2Installer.exe" disablemanifest
