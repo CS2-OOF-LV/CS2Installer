@@ -25,7 +25,7 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 
 	HANDLE hFile = CreateFileA(outputFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		printf("failed to download file.\n");
+		printf("failed to download file -> %s\n", outputFile);
 		return false;
 	}
 
@@ -263,18 +263,19 @@ void Downloader::DownloadMods() {
 		"Workshop Tools - RAYTRACING.bat",
 		"Workshop Tools.bat" };
 
-	/* Create mods folder */
+	/* Create needed folders */
 	std::filesystem::create_directory(currentPath / "game" / "csgo_mods");
-
-	/* remove the gameinfo.gi from csgo folder so that we can replace it with ours */
-	std::filesystem::path filePath = "game/csgo/gameinfo.gi";
-	if (std::filesystem::exists(filePath)) {
-		std::filesystem::remove(filePath);
-	}
+	std::filesystem::create_directory(currentPath / "game" / "csgo" / "scripts");
+	std::filesystem::create_directory(currentPath / "game" / "csgo" / "scripts" / "vscripts");
 
 	/* download files to specific directories */
 	int maxIndex = sizeof(filePaths) / sizeof(filePaths[0]);
 	for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) {
+		std::filesystem::path filePath = filePaths[downloadIndex];
+		if (std::filesystem::exists(filePath)) {
+			std::filesystem::remove(filePath);
+		}
+
 		std::filesystem::path downloadFilePath = currentPath / filePaths[downloadIndex];
 		std::string downloadPath = downloadFilePath.string();
 		//printf("%s\n", downloadPath.c_str());
