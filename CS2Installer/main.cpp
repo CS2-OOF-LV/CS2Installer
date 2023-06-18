@@ -8,6 +8,14 @@
 #include "patcher.hpp"
 
 int main(int argc, char* argv[]) {
+	if (Downloader::needsUpdate()) {
+		printf("update required, please press enter to download the update.\n");
+		system("pause");
+		Downloader::UpdateInstaller();
+		system("pause");
+		return 0;
+	}
+
 	for (int i = 1; i < argc; ++i) {
 		if (std::strcmp(argv[i], "disablemanifest") == 0) {
 			Globals::usesNoManifests = true;

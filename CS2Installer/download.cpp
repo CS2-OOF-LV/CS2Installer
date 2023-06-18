@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <filesystem>
+#include <fstream>
 
 #include <wininet.h>
 #pragma comment(lib, "wininet.lib")
@@ -20,7 +21,7 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 		return false;
 	}
 
-	printf("path -> %s\n", outputFile);
+	//printf("path -> %s\n", outputFile);
 
 	HANDLE hFile = CreateFileA(outputFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
@@ -36,10 +37,38 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 	}
 
 	CloseHandle(hFile);
-	printf("downloaded file to %s\n", outputFile);
+	//printf("downloaded file to %s\n", outputFile);
 
 	InternetCloseHandle(hUrl);
 	InternetCloseHandle(hInternet);
+}
+
+std::string ReadOnlineString(const char* url) {
+	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	if (!hInternet) {
+		printf("failed to initialize wininet.\n");
+		return "";
+	}
+
+	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE, 0);
+	if (!hUrl) {
+		printf("failed to access url.\n");
+		return "";
+	}
+
+	std::string result;
+	constexpr DWORD bufferSize = 4096;
+	char buffer[bufferSize];
+	DWORD bytesRead;
+	while (InternetReadFile(hUrl, buffer, bufferSize, &bytesRead) && bytesRead > 0) {
+		result.append(buffer, bytesRead);
+	}
+
+	InternetCloseHandle(hUrl);
+	InternetCloseHandle(hInternet);
+
+	//printf("read from string -> %s\n", result.c_str());
+	return result;
 }
 
 std::filesystem::path GetLocalAppData() {
@@ -57,6 +86,71 @@ std::filesystem::path GetLocalAppData() {
 	return localAppDataPath;
 }
 
+bool Downloader::needsUpdate() {
+	std::string versionString = ReadOnlineString("https://raw.githubusercontent.com/CS2-OOF-LV/CS2Installer-Dependencies/main/version.txt");
+	if (!versionString.empty() && versionString.find(Globals::currentVersion) == std::string::npos) /* check if the string isnt empty and isnt current version */
+		return true;
+
+	return false;
+}
+
+void Downloader::UpdateInstaller() {
+	std::string currentAppPath;
+	std::string updatedAppPath;
+
+	/* get the application name */
+	char buffer[MAX_PATH];
+	GetModuleFileNameA(NULL, buffer, MAX_PATH);
+	currentAppPath = buffer;
+	updatedAppPath = currentAppPath + ".temp";
+
+	/* download the update */
+	if (!DownloadFile("https://github.com/CS2-OOF-LV/CS2Installer/raw/main/build/CS2Installer.exe", updatedAppPath.c_str())) {
+		printf("failed to download update.\n");
+		system("pause");
+		exit(0);
+	}
+
+	/* extract file names from paths */
+	std::string currentAppName = currentAppPath.substr(currentAppPath.find_last_of("\\/") + 1);
+	std::string updatedAppName = updatedAppPath.substr(updatedAppPath.find_last_of("\\/") + 1);
+
+	/* schedule deletion of the current installer after we exited our program */
+	std::string deleteCommand = "del \"" + currentAppName + "\" & ren \"" + updatedAppName + "\" \"" + currentAppName + "\" & del \"%~f0\"";
+	std::string batchFilePath = currentAppPath + ".bat";
+	std::ofstream batchFile(batchFilePath);
+	if (batchFile.is_open()) {
+		batchFile << "@echo off\n";
+		batchFile << deleteCommand;
+		batchFile.close();
+	}
+	else {
+		printf("failed to create the deletion script.\n");
+		system("pause");
+		exit(0);
+	}
+
+	/* create a seperate process for deletion */
+	STARTUPINFOA startupInfo;
+	PROCESS_INFORMATION processInfo;
+	ZeroMemory(&startupInfo, sizeof(startupInfo));
+	ZeroMemory(&processInfo, sizeof(processInfo));
+	startupInfo.cb = sizeof(startupInfo);
+	if (CreateProcessA(NULL, (LPSTR)batchFilePath.c_str(), NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo)) {
+		/* close the handles so that the process can execute independently */
+		CloseHandle(processInfo.hProcess);
+		CloseHandle(processInfo.hThread);
+	}
+	else {
+		printf("failed to create the deletion process.\n");
+		system("pause");
+		exit(0);
+	}
+
+	/* exit our prograam so that it can delete itself */
+	exit(0);
+}
+
 void Downloader::PrepareDownload() {
 	/* General Data we need for Preparing */
 	std::filesystem::path currentPath = std::filesystem::current_path();
@@ -72,7 +166,7 @@ void Downloader::PrepareDownload() {
 	/* create manifest folder and download manifest files */
 	std::filesystem::create_directory(currentPath / "manifestFiles");
 
-	printf("tried creating manifest directory at -> %s\n", stringPath.c_str());
+	//printf("tried creating manifest directory at -> %s\n", stringPath.c_str());
 	if (!Globals::usesNoManifests) {
 		int maxIndex = sizeof(manifestNames) / sizeof(manifestNames[0]);
 		for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) { /* download our manifest files */

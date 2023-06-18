@@ -3,6 +3,6 @@
 #include <iostream>
 
 namespace Globals {
-	inline std::string currentPath = "";
+	inline std::string currentVersion = "1.1";
 	inline bool usesNoManifests = false;
 }
