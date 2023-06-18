@@ -228,11 +228,13 @@ void Downloader::DownloadCS2() {
 		manifestPath += manifestNames[downloadIndex];
 
 		/* execute steamctl command using our manifests */
-		std::string executeDownload = currentPath.string() + "\\";
-		executeDownload += "python-3.11.4-embed-amd64\\python.exe -m steamctl depot download -f ";
+		std::string executeDownload = "\"" + currentPath.string() + "\\";
+		executeDownload += "python-3.11.4-embed-amd64\\python.exe";
+		executeDownload += "\"";
+		executeDownload += " -m steamctl depot download -f ";
 		executeDownload += manifestPath;
 		executeDownload += " --skip-licenses --skip-login";
-		//printf("command executed -> %s\n", executeDownload.c_str());
+		printf("command executed -> %s\n", executeDownload.c_str());
 		system(executeDownload.c_str());
 	}
 }
