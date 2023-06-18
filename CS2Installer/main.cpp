@@ -7,8 +7,6 @@
 #include "download.hpp"
 #include "patcher.hpp"
 
-#pragma comment(lib, "Urlmon.lib")
-
 int main(int argc, char* argv[]) {
 	for (int i = 1; i < argc; ++i) {
 		if (std::strcmp(argv[i], "disablemanifest") == 0) {
