@@ -9,15 +9,14 @@
 
 #pragma comment(lib, "Urlmon.lib")
 
-int main() {
-	std::string currentPath = std::filesystem::current_path().string();
-	for (size_t i = 2; i < currentPath.length(); i++) {
-		if (i > 1) {
-			currentPath.erase(i, 1);
-			i--;
+int main(int argc, char* argv[]) {
+	for (int i = 1; i < argc; ++i) {
+		if (std::strcmp(argv[i], "disablemanifest") == 0) {
+			Globals::usesNoManifests = true;
+			break;
 		}
 	}
-	Globals::currentPath = currentPath + " ; " + std::filesystem::current_path().string();
+
 	printf("preparing download...\n");
 	Downloader::PrepareDownload();
 	printf("prepared download.\n");
@@ -39,7 +38,9 @@ int main() {
 	printf("finished mod patches.\n");
 	Sleep(1000);
 	printf("cleaning up...\n");
-	std::filesystem::remove_all("manifestFiles");
+	if (!Globals::usesNoManifests) {
+		std::filesystem::remove_all("manifestFiles");
+	}
 	printf("cleaned up.\n");
 	system("pause");
 	return 0;

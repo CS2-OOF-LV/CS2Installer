@@ -29,20 +29,24 @@ void Downloader::PrepareDownload() {
     /* create manifest folder and download manifest files */
     std::filesystem::create_directory(currentPath / "manifestFiles");
 
-    int maxIndex = sizeof(manifestNames) / sizeof(manifestNames[0]);
-    for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) { /* download our manifest files */
-        std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
-        downloadLink += manifestNames[downloadIndex];
+    if (!Globals::usesNoManifests) {
+        std::filesystem::remove_all("manifestFiles"); // delete the manifestFiles folder everytime we download so that we dont accidentally cause the game to not update
 
-        std::string downloadPath = "manifestFiles/";
-        downloadPath += manifestNames[downloadIndex];
+        int maxIndex = sizeof(manifestNames) / sizeof(manifestNames[0]);
+        for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) { /* download our manifest files */
+            std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
+            downloadLink += manifestNames[downloadIndex];
 
-        HRESULT downloadedManifest = URLDownloadToFileA(NULL, downloadLink.c_str(), downloadPath.c_str(), NULL, NULL);
-        if (downloadedManifest != S_OK) {
-            printf("failed to download manifest file.\n");
-            printf("please report this to Nebel: %i\n", downloadedManifest);
-            system("pause");
-            exit(0);
+            std::string downloadPath = "manifestFiles/";
+            downloadPath += manifestNames[downloadIndex];
+
+            HRESULT downloadedManifest = URLDownloadToFileA(NULL, downloadLink.c_str(), downloadPath.c_str(), NULL, NULL);
+            if (downloadedManifest != S_OK) {
+                printf("failed to download manifest file.\n");
+                printf("please report this to Nebel: %i\n", downloadedManifest);
+                system("pause");
+                exit(0);
+            }
         }
     }
 
@@ -51,19 +55,21 @@ void Downloader::PrepareDownload() {
     std::filesystem::create_directory(steamctlDirectory);
     std::filesystem::create_directory(steamctlDirectory / "steamctl");
 
-    std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
-    downloadLink += depotKeys;
+    if (!Globals::usesNoManifests) {
+        std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
+        downloadLink += depotKeys;
 
-    std::string downloadPath = localAppData.string();
-    downloadPath += "\\steamctl\\steamctl\\";
-    downloadPath += depotKeys;
+        std::string downloadPath = localAppData.string();
+        downloadPath += "\\steamctl\\steamctl\\";
+        downloadPath += depotKeys;
 
-    HRESULT downloadedKeys = URLDownloadToFileA(NULL, downloadLink.c_str(), downloadPath.c_str(), NULL, NULL);
-    if (downloadedKeys != S_OK) {
-        printf("failed to download depot keys.\n");
-        printf("please report this to Nebel: %i\n", downloadedKeys);
-        system("pause");
-        exit(0);
+        HRESULT downloadedKeys = URLDownloadToFileA(NULL, downloadLink.c_str(), downloadPath.c_str(), NULL, NULL);
+        if (downloadedKeys != S_OK) {
+            printf("failed to download depot keys.\n");
+            printf("please report this to Nebel: %i\n", downloadedKeys);
+            system("pause");
+            exit(0);
+        }
     }
 }
 
