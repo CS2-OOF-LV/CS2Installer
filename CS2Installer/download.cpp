@@ -241,12 +241,11 @@ void Downloader::DownloadCS2() {
 
 void Downloader::DownloadMods() {
 	std::filesystem::path currentPath = std::filesystem::current_path();
-	const char* githubPaths[13] = {
+	const char* githubPaths[12] = {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_001.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_002.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_003.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_004.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/scripts/vscripts/banList.lua",
@@ -256,12 +255,11 @@ void Downloader::DownloadMods() {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools%20-%20RAYTRACING.bat",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools.bat" };
 
-	const char* filePaths[13] = {
+	const char* filePaths[12] = {
 		"game\\csgo_mods\\pak01_000.vpk",
 		"game\\csgo_mods\\pak01_001.vpk",
 		"game\\csgo_mods\\pak01_002.vpk",
 		"game\\csgo_mods\\pak01_003.vpk",
-		"game\\csgo_mods\\pak01_004.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
 		"game\\csgo\\gameinfo.gi",
 		"game\\csgo\\scripts\\vscripts\\banList.lua",
