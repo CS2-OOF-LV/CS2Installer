@@ -41,18 +41,6 @@ bool Patcher::PatchServer() {
     return true;
 }
 
-bool Patcher::PatchVScript() {
-    const char* someCheck[2] = { "\xBE\x01\x00\x00\x00\x2B\xD6\x74\x61\x3B\xD6\x0F\x85\x9B\x03\x00", "\xBE\x02\x00\x00\x00\x2B\xD6\x74\x61\x3B\xD6\x0F\x85\x9B\x03\x00" };
-
-    if (!ReplaceBytes("game/bin/win64/vscript.dll", someCheck[0], someCheck[1])) {
-        printf("failed to patch vscript function\n");
-        return false;
-    }
-
-    //printf("patched vscript function: %s -> %s\n", someCheck[0], someCheck[1]);
-    return true;
-}
-
 void RemoveExistingPatchFiles(const char* path) {
     std::filesystem::path filePath = path;
     if (std::filesystem::exists(filePath)) {
@@ -63,7 +51,6 @@ void RemoveExistingPatchFiles(const char* path) {
 void Patcher::CleanPatchFiles() {
     RemoveExistingPatchFiles("game/csgo/bin/win64/client.dll");
     RemoveExistingPatchFiles("game/csgo/bin/win64/server.dll");
-    RemoveExistingPatchFiles("game/bin/win64/vscript.dll");
 }
 
 bool Patcher::ReplaceBytes(const char* filename, const char* searchPattern, const char* replaceBytes) {
