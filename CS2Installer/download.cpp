@@ -241,12 +241,13 @@ void Downloader::DownloadCS2() {
 
 void Downloader::DownloadMods() {
 	std::filesystem::path currentPath = std::filesystem::current_path();
-	const char* githubPaths[12] = {
+	const char* githubPaths[13] = {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_001.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_002.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_003.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
+		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/scripts/vscripts/banList.lua",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Start%20Game%20(English)%20-%20DEBUG.bat",
@@ -255,12 +256,13 @@ void Downloader::DownloadMods() {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools%20-%20RAYTRACING.bat",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools.bat" };
 
-	const char* filePaths[12] = {
+	const char* filePaths[13] = {
 		"game\\csgo_mods\\pak01_000.vpk",
 		"game\\csgo_mods\\pak01_001.vpk",
 		"game\\csgo_mods\\pak01_002.vpk",
 		"game\\csgo_mods\\pak01_003.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
+		"game\\bin\\win\\vscript.dll"
 		"game\\csgo\\gameinfo.gi",
 		"game\\csgo\\scripts\\vscripts\\banList.lua",
 		"Start Game (English) - DEBUG.bat",
@@ -273,6 +275,7 @@ void Downloader::DownloadMods() {
 	std::filesystem::create_directory(currentPath / "game" / "csgo_mods");
 	std::filesystem::create_directory(currentPath / "game" / "csgo" / "scripts");
 	std::filesystem::create_directory(currentPath / "game" / "csgo" / "scripts" / "vscripts");
+	std::filesystem::create_directory(currentPath / "game" / "bin" / "win64");
 
 	/* download files to specific directories */
 	int maxIndex = sizeof(filePaths) / sizeof(filePaths[0]);
