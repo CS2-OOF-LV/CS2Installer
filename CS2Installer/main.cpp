@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
 	printf("starting patches...\n");
 	Patcher::PatchClient();
 	Patcher::PatchServer();
-	Patcher::PatchVScript();
 	printf("finished patches.\n");
 	Sleep(1500);
 	printf("starting mod patches...\n");
