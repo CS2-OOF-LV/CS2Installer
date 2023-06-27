@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <filesystem>
+#include <conio.h>
 
 #include "globals.hpp"
 
@@ -10,9 +11,9 @@
 int main(int argc, char* argv[]) {
 	if (Downloader::needsUpdate()) {
 		printf("update required, please press enter to download the update.\n");
-		system("pause");
+		_getch();
 		Downloader::UpdateInstaller();
-		system("pause");
+		_getch();
 		return 0;
 	}
 
@@ -47,6 +48,6 @@ int main(int argc, char* argv[]) {
 		std::filesystem::remove_all("manifestFiles");
 	}
 	printf("cleaned up.\n");
-	system("pause");
+	_getch();
 	return 0;
 }

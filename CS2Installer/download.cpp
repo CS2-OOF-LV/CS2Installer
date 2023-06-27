@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include <fstream>
+#include <conio.h>
 
 #include <wininet.h>
 #pragma comment(lib, "wininet.lib")
@@ -77,7 +78,7 @@ std::filesystem::path GetLocalAppData() {
 	errno_t result = _dupenv_s(&localAppData, &bufferSize, "LOCALAPPDATA");
 	if (result != NULL || !localAppData) {
 		printf("failed to get local appdata directory.\n");
-		system("pause");
+		_getch();
 		exit(0);
 	}
 
@@ -107,7 +108,7 @@ void Downloader::UpdateInstaller() {
 	/* download the update */
 	if (!DownloadFile("https://github.com/CS2-OOF-LV/CS2Installer/raw/main/build/CS2Installer.exe", updatedAppPath.c_str())) {
 		printf("failed to download update.\n");
-		system("pause");
+		_getch();
 		exit(0);
 	}
 
@@ -126,7 +127,7 @@ void Downloader::UpdateInstaller() {
 	}
 	else {
 		printf("failed to create the deletion script.\n");
-		system("pause");
+		_getch();
 		exit(0);
 	}
 
@@ -143,7 +144,7 @@ void Downloader::UpdateInstaller() {
 	}
 	else {
 		printf("failed to create the deletion process.\n");
-		system("pause");
+		_getch();
 		exit(0);
 	}
 
@@ -182,7 +183,7 @@ void Downloader::PrepareDownload() {
 			if (downloadedManifest != S_OK) {
 				printf("failed to download manifest file.\n");
 				printf("please report this to Nebel: %i\n", downloadedManifest);
-				system("pause");
+				_getch();
 				exit(0);
 			}*/
 		}
@@ -207,7 +208,7 @@ void Downloader::PrepareDownload() {
 		if (downloadedKeys != S_OK) {
 			printf("failed to download depot keys.\n");
 			printf("please report this to Nebel: %i\n", downloadedKeys);
-			system("pause");
+			_getch();
 			exit(0);
 		}*/
 	}
@@ -295,7 +296,7 @@ void Downloader::DownloadMods() {
 		if (downloadedKeys != S_OK) {
 			printf("failed to download depot keys.\n");
 			printf("please report this to Nebel: %i\n", downloadedKeys);
-			system("pause");
+			_getch();
 			exit(0);
 		}*/
 	}
