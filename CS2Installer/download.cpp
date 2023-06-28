@@ -88,7 +88,7 @@ std::filesystem::path GetLocalAppData() {
 }
 
 bool Downloader::needsUpdate() {
-	std::string versionString = ReadOnlineString("https://raw.githubusercontent.com/CS2-OOF-LV/CS2Installer-Dependencies/main/version.txt");
+	std::string versionString = ReadOnlineString("https://raw.githubusercontent.com/CS2-OOF-LV/CS2Installer/main/CS2Installer/globals.hpp");
 	if (!versionString.empty() && versionString.find(Globals::currentVersion) == std::string::npos) /* check if the string isnt empty and isnt current version */
 		return true;
 
