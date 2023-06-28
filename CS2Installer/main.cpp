@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 	Patcher::PatchServer();
 	printf("finished patches.\n");
 	Sleep(1500);
-	printf("starting mod patches...\n");
+	printf("starting mod patches(this can take a long time)...\n");
 	Downloader::DownloadMods();
 	printf("finished mod patches.\n");
 	Sleep(1000);

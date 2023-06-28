@@ -272,6 +272,10 @@ void Downloader::DownloadMods() {
 		"Workshop Tools - RAYTRACING.bat",
 		"Workshop Tools.bat" };
 
+	const char* replaceExceptionList[] = {
+		"banList.lua"
+	};
+
 	/* Create needed folders */
 	std::filesystem::create_directory(currentPath / "game" / "csgo_mods");
 	std::filesystem::create_directory(currentPath / "game" / "csgo" / "scripts");
@@ -282,8 +286,13 @@ void Downloader::DownloadMods() {
 	int maxIndex = sizeof(filePaths) / sizeof(filePaths[0]);
 	for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) {
 		std::filesystem::path filePath = filePaths[downloadIndex];
-		if (std::filesystem::exists(filePath)) {
-			std::filesystem::remove(filePath);
+		for (const char* exception : replaceExceptionList) {
+			std::string stringPath = filePaths[downloadIndex];
+			if (stringPath.find(exception) == std::string::npos) { /* if it cant find the exceptionfile in the current file index */
+				if (std::filesystem::exists(filePath)) {
+					std::filesystem::remove(filePath);
+				}
+			}
 		}
 
 		std::filesystem::path downloadFilePath = currentPath / filePaths[downloadIndex];
