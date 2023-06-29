@@ -3,6 +3,6 @@
 #include <iostream>
 
 namespace Globals {
-	inline std::string currentVersion = "1.9";
+	inline std::string currentVersion = "2.0";
 	inline bool usesNoManifests = false;
 }

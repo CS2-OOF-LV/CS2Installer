@@ -263,7 +263,7 @@ void Downloader::DownloadMods() {
 		"game\\csgo_mods\\pak01_002.vpk",
 		"game\\csgo_mods\\pak01_003.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
-		"game\\bin\\win64\\vscript.dll"
+		"game\\bin\\win64\\vscript.dll",
 		"game\\csgo\\gameinfo.gi",
 		"game\\csgo\\scripts\\vscripts\\banList.lua",
 		"Start Game (English) - DEBUG.bat",
