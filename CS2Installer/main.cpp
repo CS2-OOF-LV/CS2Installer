@@ -11,6 +11,8 @@
 #include "patcher.hpp"
 
 int main(int argc, char* argv[]) {
+	std::string wantsMovementPatch;
+
 	if (Downloader::needsUpdate()) {
 		printf("update required, please press enter to download the update.\n");
 		_getch();
@@ -35,7 +37,11 @@ int main(int argc, char* argv[]) {
 	printf("finished download.\n");
 	printf("starting patches...\n");
 	Patcher::PatchClient();
-	Patcher::PatchServer();
+	printf("movement patch(better for surf or bhop servers)(y/n)\n");
+	std::cin >> wantsMovementPatch;
+	if (wantsMovementPatch.find("y") != std::string::npos || wantsMovementPatch.find("y") != std::string::npos) {
+		Patcher::PatchServer();
+	}
 	printf("finished patches.\n");
 	printf("starting mod patches(this can take a long time)...\n");
 	Downloader::DownloadMods();

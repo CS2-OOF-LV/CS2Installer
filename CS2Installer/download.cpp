@@ -244,9 +244,6 @@ void Downloader::DownloadMods() {
 	std::filesystem::path currentPath = std::filesystem::current_path();
 	const char* githubPaths[13] = {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_001.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_002.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_003.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
@@ -259,9 +256,6 @@ void Downloader::DownloadMods() {
 
 	const char* filePaths[13] = {
 		"game\\csgo_mods\\pak01_000.vpk",
-		"game\\csgo_mods\\pak01_001.vpk",
-		"game\\csgo_mods\\pak01_002.vpk",
-		"game\\csgo_mods\\pak01_003.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
 		"game\\bin\\win64\\vscript.dll",
 		"game\\csgo\\gameinfo.gi",
@@ -275,6 +269,9 @@ void Downloader::DownloadMods() {
 	const char* replaceExceptionList[] = {
 		"banList.lua"
 	};
+
+	/* delete the mods folder so that all older modifications get deleted */
+	std::filesystem::remove_all(currentPath / "game" / "csgo_mods");
 
 	/* Create needed folders */
 	std::filesystem::create_directory(currentPath / "game" / "csgo_mods");
