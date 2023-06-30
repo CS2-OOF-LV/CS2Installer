@@ -9,19 +9,19 @@ bool Patcher::PatchClient() {
     const char* versionCheckBytes[4] = { "\x6C\x69\x6D\x69\x74\x65\x64\x62\x65\x74\x61", "\x66\x75\x6C\x6C\x76\x65\x72\x73\x69\x6F\x6E", /* there are two checks */ "\x6C\x69\x6D\x69\x74\x65\x64\x62\x65\x74\x61", "\x66\x75\x6C\x6C\x76\x65\x72\x73\x69\x6F\x6E"};
     const char* voiceScaleBytes[2] = { "\x80\x3F\x0F\x11\x44\x24\x60\xE8\x1B\x93", "\xA0\x40\x0F\x11\x44\x24\x60\xE8\x1B\x93" };
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", steamCheckBytes[0], steamCheckBytes[1])) {
-        printf("failed to patch steam check\n");
+        puts("failed to patch steam check");
         return false;
     }
 
     //printf("patched steam check: %s -> %s\n", steamCheckBytes[0], steamCheckBytes[1]);
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", versionCheckBytes[0], versionCheckBytes[1]) || !ReplaceBytes("game/csgo/bin/win64/client.dll", versionCheckBytes[2], versionCheckBytes[3])) {
-        printf("failed to patch version check\n");
+        puts("failed to patch version check");
         return false;
     }
 
     //printf("patched version check: %s -> %s\n", versionCheckBytes[0], versionCheckBytes[1]);
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", voiceScaleBytes[0], voiceScaleBytes[1])) {
-        printf("failed to patch voice_scale\n");
+        puts("failed to patch voice_scale");
         return false;
     }
 
@@ -33,7 +33,7 @@ bool Patcher::PatchServer() {
     const char* clampCheckBytes[2] = { "\x76\x59\xF2\x0F\x10\x4F\x3C", "\xEB\x59\xF2\x0F\x10\x4F\x3C" };
 
     if (!ReplaceBytes("game/csgo/bin/win64/server.dll", clampCheckBytes[0], clampCheckBytes[1])) {
-        printf("failed to patch movement clamp\n");
+        puts("failed to patch movement clamp");
         return false;
     }
 

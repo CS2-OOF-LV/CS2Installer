@@ -1,6 +1,7 @@
 #include "download.hpp"
 #include "globals.hpp"
 
+
 #include <Windows.h>
 #include <filesystem>
 #include <fstream>
@@ -12,13 +13,13 @@
 bool DownloadFile(const char* url, const char* outputFile) { /* currently not using it as bool because i dont need any checks for it at the moment */
 	HINTERNET hInternet = InternetOpenA("FileDownloader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 	if (!hInternet) {
-		printf("failed to initialize wininet.\n");
+		puts("failed to initialize wininet.");
 		return false;
 	}
 
 	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD, 0);
 	if (!hUrl) {
-		printf("failed to access url.\n");
+		puts("failed to access url.");
 		return false;
 	}
 
@@ -36,7 +37,6 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 		DWORD bytesWritten;
 		WriteFile(hFile, buffer, bytesRead, &bytesWritten, NULL);
 	}
-
 	CloseHandle(hFile);
 	//printf("downloaded file to %s\n", outputFile);
 
@@ -47,13 +47,13 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 std::string ReadOnlineString(const char* url) {
 	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 	if (!hInternet) {
-		printf("failed to initialize wininet.\n");
+		puts("failed to initialize wininet.");
 		return "";
 	}
 
 	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE, 0);
 	if (!hUrl) {
-		printf("failed to access url.\n");
+		puts("failed to access url.");
 		return "";
 	}
 
@@ -77,9 +77,9 @@ std::filesystem::path GetLocalAppData() {
 	size_t bufferSize = 0;
 	errno_t result = _dupenv_s(&localAppData, &bufferSize, "LOCALAPPDATA");
 	if (result != NULL || !localAppData) {
-		printf("failed to get local appdata directory.\n");
+		puts("failed to get local appdata directory.");
 		_getch();
-		exit(0);
+		exit(1);
 	}
 
 	std::filesystem::path localAppDataPath(static_cast<const char*>(localAppData));
@@ -107,9 +107,9 @@ void Downloader::UpdateInstaller() {
 
 	/* download the update */
 	if (!DownloadFile("https://github.com/CS2-OOF-LV/CS2Installer/raw/main/build/CS2Installer.exe", updatedAppPath.c_str())) {
-		printf("failed to download update.\n");
+		puts("failed to download update.");
 		_getch();
-		exit(0);
+		exit(1);
 	}
 
 	/* extract file names from paths */
@@ -126,9 +126,9 @@ void Downloader::UpdateInstaller() {
 		batchFile.close();
 	}
 	else {
-		printf("failed to create the deletion script.\n");
+		puts("failed to create the deletion script.");
 		_getch();
-		exit(0);
+		exit(1);
 	}
 
 	/* create a seperate process for deletion */
@@ -143,12 +143,12 @@ void Downloader::UpdateInstaller() {
 		CloseHandle(processInfo.hThread);
 	}
 	else {
-		printf("failed to create the deletion process.\n");
+		puts("failed to create the deletion process.");
 		_getch();
-		exit(0);
+		exit(1);
 	}
 
-	/* exit our prograam so that it can delete itself */
+	/* exit our program so that it can delete itself */
 	exit(0);
 }
 
@@ -184,7 +184,7 @@ void Downloader::PrepareDownload() {
 				printf("failed to download manifest file.\n");
 				printf("please report this to Nebel: %i\n", downloadedManifest);
 				_getch();
-				exit(0);
+				exit(1);
 			}*/
 		}
 	}
@@ -209,9 +209,15 @@ void Downloader::PrepareDownload() {
 			printf("failed to download depot keys.\n");
 			printf("please report this to Nebel: %i\n", downloadedKeys);
 			_getch();
-			exit(0);
+			exit(1);
 		}*/
 	}
+	if (!std::filesystem::exists("python-3.11.4-embed-amd64") || !std::filesystem::exists("python-3.11.4-embed-amd64/python.exe")) {
+		puts("python not found. make sure the \"python-3.11.4-embed-amd64\" folder exists and contains python.exe.");
+		_getch();
+		exit(1);
+	}
+
 }
 
 void Downloader::DownloadCS2() {

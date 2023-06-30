@@ -14,43 +14,42 @@ int main(int argc, char* argv[]) {
 	std::string wantsMovementPatch;
 
 	if (Downloader::needsUpdate()) {
-		printf("update required, please press enter to download the update.\n");
+		puts("update required, please press enter to download the update.");
 		_getch();
 		Downloader::UpdateInstaller();
 		_getch();
-		return 0;
+		return 1;
 	}
 
 	for (int i = 1; i < argc; ++i) {
-		if (std::strcmp(argv[i], "disablemanifest") == 0) {
+		if (strcmp(argv[i], "disablemanifest") == 0) {
 			Globals::usesNoManifests = true;
 			break;
 		}
 	}
-
-	printf("preparing download...\n");
+	puts("preparing download...");
 	Downloader::PrepareDownload();
-	printf("prepared download.\n");
+	puts("prepared download.");
 	Patcher::CleanPatchFiles();
-	printf("starting download...\n");
+	puts("starting download...");
 	Downloader::DownloadCS2();
-	printf("finished download.\n");
-	printf("starting patches...\n");
+	puts("finished download.");
+	puts("starting patches...");
 	Patcher::PatchClient();
-	printf("movement patch(better for surf or bhop servers)(y/n)\n");
+	puts("movement patch(better for surf or bhop servers)(y/n)");
 	std::cin >> wantsMovementPatch;
 	if (wantsMovementPatch.find("y") != std::string::npos || wantsMovementPatch.find("y") != std::string::npos) {
 		Patcher::PatchServer();
 	}
-	printf("finished patches.\n");
-	printf("starting mod patches(this can take a long time)...\n");
+	puts("finished patches.");
+	puts("starting mod patches(this can take a long time)...");
 	Downloader::DownloadMods();
-	printf("finished mod patches.\n");
-	printf("cleaning up...\n");
+	puts("finished mod patches.");
+	puts("cleaning up...");
 	if (!Globals::usesNoManifests) {
 		std::filesystem::remove_all("manifestFiles");
 	}
-	printf("cleaned up.\n");
+	puts("cleaned up.");
 	_getch();
 	return 0;
 }
