@@ -32,6 +32,8 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 	}
 
 	BYTE buffer[4096];
+	memset(buffer, 0, sizeof(buffer)); /* initialize buffer */
+
 	DWORD bytesRead;
 	while (InternetReadFile(hUrl, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
 		DWORD bytesWritten;
@@ -42,26 +44,29 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 
 	InternetCloseHandle(hUrl);
 	InternetCloseHandle(hInternet);
+	return true;
 }
 
 std::string ReadOnlineString(const char* url) {
+	std::string result = "";
+
 	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 	if (!hInternet) {
 		puts("failed to initialize wininet.");
-		return "";
+		return result;
 	}
 
 	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE, 0);
 	if (!hUrl) {
 		puts("failed to access url.");
-		return "";
+		return result;
 	}
 
-	std::string result;
-	constexpr DWORD bufferSize = 4096;
-	char buffer[bufferSize];
+	char buffer[4096];
+	memset(buffer, 0, sizeof(buffer)); /* initialize buffer */
+
 	DWORD bytesRead;
-	while (InternetReadFile(hUrl, buffer, bufferSize, &bytesRead) && bytesRead > 0) {
+	while (InternetReadFile(hUrl, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
 		result.append(buffer, bytesRead);
 	}
 
@@ -78,7 +83,7 @@ std::filesystem::path GetLocalAppData() {
 	errno_t result = _dupenv_s(&localAppData, &bufferSize, "LOCALAPPDATA");
 	if (result != NULL || !localAppData) {
 		puts("failed to get local appdata directory.");
-		_getch();
+		waitforinput();
 		exit(1);
 	}
 
@@ -108,7 +113,7 @@ void Downloader::UpdateInstaller() {
 	/* download the update */
 	if (!DownloadFile("https://github.com/CS2-OOF-LV/CS2Installer/raw/main/build/CS2Installer.exe", updatedAppPath.c_str())) {
 		puts("failed to download update.");
-		_getch();
+		waitforinput();
 		exit(1);
 	}
 
@@ -127,7 +132,7 @@ void Downloader::UpdateInstaller() {
 	}
 	else {
 		puts("failed to create the deletion script.");
-		_getch();
+		waitforinput();
 		exit(1);
 	}
 
@@ -144,7 +149,7 @@ void Downloader::UpdateInstaller() {
 	}
 	else {
 		puts("failed to create the deletion process.");
-		_getch();
+		waitforinput();
 		exit(1);
 	}
 
@@ -183,7 +188,7 @@ void Downloader::PrepareDownload() {
 			if (downloadedManifest != S_OK) {
 				printf("failed to download manifest file.\n");
 				printf("please report this to Nebel: %i\n", downloadedManifest);
-				_getch();
+				waitforinput();
 				exit(1);
 			}*/
 		}
@@ -208,13 +213,13 @@ void Downloader::PrepareDownload() {
 		if (downloadedKeys != S_OK) {
 			printf("failed to download depot keys.\n");
 			printf("please report this to Nebel: %i\n", downloadedKeys);
-			_getch();
+			waitforinput();
 			exit(1);
 		}*/
 	}
 	if (!std::filesystem::exists("python-3.11.4-embed-amd64") || !std::filesystem::exists("python-3.11.4-embed-amd64/python.exe")) {
 		puts("python not found. make sure the \"python-3.11.4-embed-amd64\" folder exists and contains python.exe.");
-		_getch();
+		waitforinput();
 		exit(1);
 	}
 
@@ -308,7 +313,7 @@ void Downloader::DownloadMods() {
 		if (downloadedKeys != S_OK) {
 			printf("failed to download depot keys.\n");
 			printf("please report this to Nebel: %i\n", downloadedKeys);
-			_getch();
+			waitforinput();
 			exit(0);
 		}*/
 	}

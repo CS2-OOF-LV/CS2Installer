@@ -1,7 +1,6 @@
 #include <Windows.h>
 #include <iostream>
 #include <filesystem>
-#include <conio.h>
 #include <thread>
 #include <chrono>
 
@@ -15,10 +14,9 @@ int main(int argc, char* argv[]) {
 
 	if (Downloader::needsUpdate()) {
 		puts("update required, please press enter to download the update.");
-		_getch();
+		waitforinput();
 		Downloader::UpdateInstaller();
-		_getch();
-		return 1;
+		//return 1; /* doeesnt reach */
 	}
 
 	for (int i = 1; i < argc; ++i) {
@@ -38,9 +36,15 @@ int main(int argc, char* argv[]) {
 	Patcher::PatchClient();
 	puts("movement patch(better for surf or bhop servers)(y/n)");
 	std::cin >> wantsMovementPatch;
-	if (wantsMovementPatch.find("y") != std::string::npos || wantsMovementPatch.find("y") != std::string::npos) {
+
+	for (char& c : wantsMovementPatch) { /* make the anwser lowercase */
+		c = std::tolower(c);
+	}
+
+	if (wantsMovementPatch.find("y") != std::string::npos) {
 		Patcher::PatchServer();
 	}
+
 	puts("finished patches.");
 	puts("starting mod patches(this can take a long time)...");
 	Downloader::DownloadMods();
@@ -50,6 +54,6 @@ int main(int argc, char* argv[]) {
 		std::filesystem::remove_all("manifestFiles");
 	}
 	puts("cleaned up.");
-	_getch();
+	waitforinput();
 	return 0;
 }
