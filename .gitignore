@@ -1,4 +1,4 @@
 *.vs
 *.rar
 *.pdb
-bin/
+intermediates/

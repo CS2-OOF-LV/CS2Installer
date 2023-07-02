@@ -64,7 +64,7 @@ bool Patcher::ReplaceBytes(const char* filename, const char* searchPattern, cons
     }
 
     fseek(file, 0, SEEK_END);
-    long fileSize = ftell(file);
+    __int64 fileSize = ftell(file);
     rewind(file);
 
     unsigned char* buffer = (unsigned char*)malloc(fileSize);
@@ -81,7 +81,7 @@ bool Patcher::ReplaceBytes(const char* filename, const char* searchPattern, cons
 
     while (position <= endPosition) {
         if (memcmp(position, searchPattern, replaceLength) == 0) {
-            fseek(file, position - buffer, SEEK_SET);
+            fseek(file, static_cast<long>(position - buffer), SEEK_SET);
             fwrite(replaceBytes, 1, replaceLength, file);
             break;
         }

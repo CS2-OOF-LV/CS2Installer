@@ -2,10 +2,8 @@
 #include "globals.hpp"
 
 
-#include <Windows.h>
 #include <filesystem>
 #include <fstream>
-#include <conio.h>
 
 #include <wininet.h>
 #pragma comment(lib, "wininet.lib")
