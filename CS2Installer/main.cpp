@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
 		std::filesystem::remove_all("manifestFiles");
 	}
 	puts("cleaned up.");
+	puts("waiting for input...");
 	waitforinput();
 	return 0;
 }

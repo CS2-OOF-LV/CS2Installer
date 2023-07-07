@@ -249,11 +249,22 @@ void Downloader::DownloadCS2() {
 		//printf("command executed -> %s\n", executeDownload.c_str());
 		system(executeDownload.c_str());
 	}
+
+	/* quick fix for workshop tools cpu lightmap baking */
+	std::ifstream assettypes_common("game/bin/assettypes_common.txt");
+	std::ofstream assettypes_internal("game/bin/assettypes_internal.txt");
+
+	assettypes_internal << assettypes_common.rdbuf();
+
+	std::ifstream sdkenginetools("game/bin/sdkenginetools.txt");
+	std::ofstream enginetools("game/bin/enginetools.txt");
+
+	enginetools << sdkenginetools.rdbuf();
 }
 
 void Downloader::DownloadMods() {
 	std::filesystem::path currentPath = std::filesystem::current_path();
-	const char* githubPaths[13] = {
+	const char* githubPaths[] = {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
@@ -265,7 +276,7 @@ void Downloader::DownloadMods() {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools%20-%20RAYTRACING.bat",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools.bat" };
 
-	const char* filePaths[13] = {
+	const char* filePaths[] = {
 		"game\\csgo_mods\\pak01_000.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
 		"game\\bin\\win64\\vscript.dll",
@@ -291,23 +302,24 @@ void Downloader::DownloadMods() {
 	std::filesystem::create_directory(currentPath / "game" / "bin" / "win64");
 
 	/* download files to specific directories */
-	int maxIndex = sizeof(filePaths) / sizeof(filePaths[0]);
-	for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) {
-		std::filesystem::path filePath = filePaths[downloadIndex];
+	for (const char* FilePath : filePaths) {
+		std::filesystem::path filePath = FilePath;
 		for (const char* exception : replaceExceptionList) {
-			std::string stringPath = filePaths[downloadIndex];
-			if (stringPath.find(exception) == std::string::npos) { /* if it cant find the exceptionfile in the current file index */
+			std::string stringPath = FilePath;
+			if (stringPath.find(exception) == std::string::npos) { /* if it cant find the exceptionfile in the current file path */
 				if (std::filesystem::exists(filePath)) {
 					std::filesystem::remove(filePath);
 				}
 			}
 		}
 
-		std::filesystem::path downloadFilePath = currentPath / filePaths[downloadIndex];
+		std::filesystem::path downloadFilePath = currentPath / FilePath;
 		std::string downloadPath = downloadFilePath.string();
 		//printf("%s\n", downloadPath.c_str());
 
-		DownloadFile(githubPaths[downloadIndex], downloadPath.c_str());
+		for (const char* githubPath : githubPaths) {
+			DownloadFile(githubPath, downloadPath.c_str());
+		}
 
 		/*HRESULT downloadedKeys = URLDownloadToFileA(NULL, githubPaths[downloadIndex], downloadPath.c_str(), NULL, NULL);
 		if (downloadedKeys != S_OK) {
