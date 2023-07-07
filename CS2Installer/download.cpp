@@ -302,24 +302,24 @@ void Downloader::DownloadMods() {
 	std::filesystem::create_directory(currentPath / "game" / "bin" / "win64");
 
 	/* download files to specific directories */
-	for (const char* FilePath : filePaths) {
-		std::filesystem::path filePath = FilePath;
-		for (const char* exception : replaceExceptionList) {
-			std::string stringPath = FilePath;
-			if (stringPath.find(exception) == std::string::npos) { /* if it cant find the exceptionfile in the current file path */
+	int maxFileIndex = sizeof(filePaths) / sizeof(filePaths[0]);
+	for (int fileIndex = 0; fileIndex < maxFileIndex; ++fileIndex) {
+		std::filesystem::path filePath = filePaths[fileIndex];
+		int maxExceptionIndex = sizeof(replaceExceptionList) / sizeof(replaceExceptionList[0]);
+		for (int exceptionIndex = 0; exceptionIndex < maxExceptionIndex; ++exceptionIndex) {
+			std::string stringPath = filePaths[fileIndex];
+			if (stringPath.find(replaceExceptionList[exceptionIndex]) == std::string::npos) { /* if it cant find the exceptionfile in the current file path */
 				if (std::filesystem::exists(filePath)) {
 					std::filesystem::remove(filePath);
 				}
 			}
 		}
 
-		std::filesystem::path downloadFilePath = currentPath / FilePath;
+		std::filesystem::path downloadFilePath = currentPath / filePaths[fileIndex];
 		std::string downloadPath = downloadFilePath.string();
 		//printf("%s\n", downloadPath.c_str());
 
-		for (const char* githubPath : githubPaths) {
-			DownloadFile(githubPath, downloadPath.c_str());
-		}
+		DownloadFile(githubPaths[fileIndex], downloadPath.c_str());
 
 		/*HRESULT downloadedKeys = URLDownloadToFileA(NULL, githubPaths[downloadIndex], downloadPath.c_str(), NULL, NULL);
 		if (downloadedKeys != S_OK) {
