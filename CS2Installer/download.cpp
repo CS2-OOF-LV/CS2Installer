@@ -194,12 +194,18 @@ void Downloader::PrepareDownload() {
 		}
 	}
 
+	/* delete the steamctl folder because steamctl weird */
+	if (std::filesystem::exists(localAppData / "steamctl"))
+		std::filesystem::remove_all(localAppData / "steamctl");
+
+	Sleep(1000);
+
 	/* Create steamctl folders and import depot keys */
 	std::filesystem::path steamctlDirectory = localAppData / "steamctl";
 	std::filesystem::create_directory(steamctlDirectory);
 	std::filesystem::create_directory(steamctlDirectory / "steamctl");
 
-	if (!Globals::usesNoManifests) {
+	if (/*!Globals::usesNoManifests*/true) {
 		std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
 		downloadLink += depotKeys;
 
@@ -217,6 +223,7 @@ void Downloader::PrepareDownload() {
 			exit(1);
 		}*/
 	}
+
 	if (!std::filesystem::exists("python-3.11.4-embed-amd64") || !std::filesystem::exists("python-3.11.4-embed-amd64/python.exe")) {
 		puts("python not found. make sure the \"python-3.11.4-embed-amd64\" folder exists and contains python.exe.");
 		waitforinput();
