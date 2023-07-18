@@ -267,7 +267,7 @@ void Downloader::DownloadMods() {
 	const char* githubPaths[] = {
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
+		//"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
 		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/scripts/vscripts/banList.lua",
 		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Start%20Game%20(English)%20-%20DEBUG.bat",
@@ -279,7 +279,7 @@ void Downloader::DownloadMods() {
 	const char* filePaths[] = {
 		"game\\csgo_mods\\pak01_000.vpk",
 		"game\\csgo_mods\\pak01_dir.vpk",
-		"game\\bin\\win64\\vscript.dll",
+		//"game\\bin\\win64\\vscript.dll",
 		"game\\csgo\\gameinfo.gi",
 		"game\\csgo\\scripts\\vscripts\\banList.lua",
 		"Start Game (English) - DEBUG.bat",
