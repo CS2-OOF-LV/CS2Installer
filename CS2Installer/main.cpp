@@ -25,16 +25,17 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
-	puts("preparing download...");
+	puts("Preparing Download...");
 	Downloader::PrepareDownload();
-	puts("prepared download.");
+	puts("Prepared Download!");
 	Patcher::CleanPatchFiles();
-	puts("starting download...");
+	puts("Starting Download...");
 	Downloader::DownloadCS2();
-	puts("finished download.");
-	puts("starting patches...");
+	puts("Finished Download!.");
+	puts("Starting Patches...");
 	Patcher::PatchClient();
-	puts("movement patch(better for surf or bhop servers) (Type: y/n)");
+	puts("Do you want to install the Movement Patch?(This is recommended for bhop/surf servers for better movement)");
+	puts("Press 'Y' for 'Yes' or 'N' for 'No' on your keyboard");
 	std::cin >> wantsMovementPatch;
 
 	for (char& c : wantsMovementPatch) { /* make the anwser lowercase */
@@ -45,16 +46,18 @@ int main(int argc, char* argv[]) {
 		Patcher::PatchServer();
 	}
 
-	puts("finished patches.");
-	puts("starting mod patches(this can take a long time)...");
+	puts("Finished Patches!");
+	puts("Starting Client-Mod Patches...");
+	puts("This can take a long time...");
 	Downloader::DownloadMods();
-	puts("finished mod patches.");
-	puts("cleaning up...");
+	puts("Finished Client-Mod Patches!");
+	puts("Cleaning up downloader files...");
 	if (!Globals::usesNoManifests) {
 		std::filesystem::remove_all("manifestFiles");
 	}
-	puts("cleaned up.");
-	puts("waiting for input... (Press Enter)");
+	puts("Cleaned up!");
+	puts("Download complete!");
+	puts("Press 'Enter' to close the installer!");
 	waitforinput();
 	return 0;
 }
