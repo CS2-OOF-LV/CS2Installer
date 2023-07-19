@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	puts("finished download.");
 	puts("starting patches...");
 	Patcher::PatchClient();
-	puts("movement patch(better for surf or bhop servers)(y/n)");
+	puts("movement patch(better for surf or bhop servers) (Type: y/n)");
 	std::cin >> wantsMovementPatch;
 
 	for (char& c : wantsMovementPatch) { /* make the anwser lowercase */
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 		std::filesystem::remove_all("manifestFiles");
 	}
 	puts("cleaned up.");
-	puts("waiting for input...");
+	puts("waiting for input... (Press Enter)");
 	waitforinput();
 	return 0;
 }
