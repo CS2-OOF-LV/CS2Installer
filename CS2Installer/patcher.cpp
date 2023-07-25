@@ -7,7 +7,7 @@
 bool Patcher::PatchClient() {
     const char* steamCheckBytes[2] = { "\x75\x70\xFF\x15", "\xEB\x70\xFF\x15" };
     const char* versionCheckBytes[4] = { "\x6C\x69\x6D\x69\x74\x65\x64\x62\x65\x74\x61", "\x66\x75\x6C\x6C\x76\x65\x72\x73\x69\x6F\x6E", /* there are two checks */ "\x6C\x69\x6D\x69\x74\x65\x64\x62\x65\x74\x61", "\x66\x75\x6C\x6C\x76\x65\x72\x73\x69\x6F\x6E"};
-    const char* voiceScaleBytes[2] = { "\x80\x3F\x0F\x11\x44\x24\x60\xE8\xEB\x32", "\xA0\x40\x0F\x11\x44\x24\x60\xE8\xEB\x32" }; /* valve keeps patching this signature ;< need a better signature */
+    //const char* voiceScaleBytes[2] = { "\x80\x3F\x0F\x11\x44\x24\x60\xE8\xEB\x32", "\xA0\x40\x0F\x11\x44\x24\x60\xE8\xEB\x32" }; /* valve keeps patching this signature ;< need a better signature */
 
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", steamCheckBytes[0], steamCheckBytes[1])) {
         puts("failed to patch steam check");
@@ -21,10 +21,10 @@ bool Patcher::PatchClient() {
     }
 
     //printf("patched version check: %s -> %s\n", versionCheckBytes[0], versionCheckBytes[1]);
-    if (!ReplaceBytes("game/csgo/bin/win64/client.dll", voiceScaleBytes[0], voiceScaleBytes[1])) {
-        puts("failed to patch voice_scale");
-        return false;
-    }
+    //if (!ReplaceBytes("game/csgo/bin/win64/client.dll", voiceScaleBytes[0], voiceScaleBytes[1])) {
+    //    puts("failed to patch voice_scale");
+    //    return false;
+    //}
 
     //printf("patched voice_scale: %s -> %s\n", voiceScaleBytes[0], voiceScaleBytes[1]);
     return true;
