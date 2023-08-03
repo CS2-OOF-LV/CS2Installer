@@ -272,16 +272,16 @@ void Downloader::DownloadCS2() {
 void Downloader::DownloadMods() {
 	std::filesystem::path currentPath = std::filesystem::current_path();
 	const char* githubPaths[] = {
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_000.vpk",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/game/csgo_mods/pak01_dir.vpk",
 		//"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/game/bin/win64/vscript.dll",
-		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
-		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client/main/Mod%20Loading%20Files/game/csgo/scripts/vscripts/banList.lua",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Start%20Game%20(English)%20-%20DEBUG.bat",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Start%20Game%20(English).bat",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Start%20Server.bat",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools%20-%20RAYTRACING.bat",
-		"https://github.com/CS2-OOF-LV/CS2-Client/raw/main/Mod%20Loading%20Files/Workshop%20Tools.bat" };
+		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client-Files/main/Mod%20Loading%20Files/game/csgo/gameinfo.gi",
+		"https://raw.githubusercontent.com/CS2-OOF-LV/CS2-Client-Files/main/Mod%20Loading%20Files/game/csgo/scripts/vscripts/banList.lua",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/Start%20Game%20(English)%20-%20DEBUG.bat",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/Start%20Game%20(English).bat",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/Start%20Server.bat",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/Workshop%20Tools%20-%20RAYTRACING.bat",
+		"https://github.com/CS2-OOF-LV/CS2-Client-Files/raw/main/Mod%20Loading%20Files/Workshop%20Tools.bat" };
 
 	const char* filePaths[] = {
 		"game\\csgo_mods\\pak01_000.vpk",
