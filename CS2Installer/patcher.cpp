@@ -10,13 +10,13 @@ bool Patcher::PatchClient() {
     //const char* voiceScaleBytes[2] = { "\x80\x3F\x0F\x11\x44\x24\x60\xE8\xEB\x32", "\xA0\x40\x0F\x11\x44\x24\x60\xE8\xEB\x32" }; /* valve keeps patching this signature ;< need a better signature */
 
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", steamCheckBytes[0], steamCheckBytes[1], 4)) {
-        puts("failed to patch steam check");
+        puts("Œﬁ∑®–ﬁ≤π Steam ºÏ≤È(game/csgo/bin/win64/client.dll)");
         return false;
     }
 
     //printf("patched steam check: %s -> %s\n", steamCheckBytes[0], steamCheckBytes[1]);
     if (!ReplaceBytes("game/csgo/bin/win64/client.dll", versionCheckBytes[0], versionCheckBytes[1], 11) || !ReplaceBytes("game/csgo/bin/win64/client.dll", versionCheckBytes[2], versionCheckBytes[3], 11)) {
-        puts("failed to patch version check");
+        puts("∞Ê±æºÏ≤È–ﬁ≤π ß∞‹(game/csgo/bin/win64/client.dll)");
         return false;
     }
 
@@ -34,7 +34,7 @@ bool Patcher::PatchServer() {
     const char* clampCheckBytes[2] = { "\x76\x59\xF2\x0F\x10\x4F\x3C", "\xEB\x59\xF2\x0F\x10\x4F\x3C" };
 
     if (!ReplaceBytes("game/csgo/bin/win64/server.dll", clampCheckBytes[0], clampCheckBytes[1], 7)) {
-        puts("failed to patch movement clamp");
+        puts("‘À∂Ø≤π∂° ß∞‹(game/csgo/bin/win64/server.dll)");
         return false;
     }
 

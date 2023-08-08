@@ -1,1 +1,1 @@
-start "" "CS2Installer.exe" disablemanifest
+start "" "CS2-Downloader-zh_Hans.exe" disablemanifest

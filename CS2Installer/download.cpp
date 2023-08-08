@@ -13,13 +13,14 @@
 bool DownloadFile(const char* url, const char* outputFile) { /* currently not using it as bool because i dont need any checks for it at the moment */
 	HINTERNET hInternet = InternetOpenA("FileDownloader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 	if (!hInternet) {
-		puts("failed to initialize wininet.");
+		puts("wininet初始化失败。");
 		return false;
 	}
 
 	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD, 0);
 	if (!hUrl) {
-		puts("failed to access url.");
+		std::string error("无法访问网址：" + std::string(url) + "，下载之前请自行完成代理（或VPN，加速器等）的配置。");
+		puts(error.c_str());
 		return false;
 	}
 
@@ -27,7 +28,7 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 
 	HANDLE hFile = CreateFileA(outputFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		printf("failed to download file -> %s\n", outputFile);
+		printf("下载文件失败 -> %s\n", outputFile);
 		return false;
 	}
 
@@ -52,13 +53,14 @@ std::string ReadOnlineString(const char* url) {
 
 	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
 	if (!hInternet) {
-		puts("failed to initialize wininet.");
+		puts("wininet初始化失败。");
 		return result;
 	}
 
 	HINTERNET hUrl = InternetOpenUrlA(hInternet, url, NULL, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE, 0);
 	if (!hUrl) {
-		puts("failed to access url.");
+		std::string error( "无法访问网址：" + std::string(url) + "，下载之前请自行完成代理（或VPN，加速器等）的配置。" );
+		puts(error.c_str());
 		return result;
 	}
 
@@ -82,7 +84,7 @@ std::filesystem::path GetLocalAppData() {
 	size_t bufferSize = 0;
 	errno_t result = _dupenv_s(&localAppData, &bufferSize, "LOCALAPPDATA");
 	if (result != NULL || !localAppData) {
-		puts("failed to get local appdata directory.");
+		puts("无法获取本地应用程序数据目录。");
 		waitforinput();
 		exit(1);
 	}
@@ -93,7 +95,7 @@ std::filesystem::path GetLocalAppData() {
 }
 
 bool Downloader::needsUpdate() {
-	std::string versionString = ReadOnlineString("https://raw.githubusercontent.com/CS2-OOF-LV/CS2Installer/main/CS2Installer/globals.hpp");
+	std::string versionString = ReadOnlineString("https://raw.githubusercontent.com/4kliksAlex/CS2-Downloader-zh_Hans/main/CS2Installer/globals.hpp");
 	if (!versionString.empty() && versionString.find(Globals::currentVersion) == std::string::npos) /* check if the string isnt empty and isnt current version */
 		return true;
 
@@ -111,8 +113,8 @@ void Downloader::UpdateInstaller() {
 	updatedAppPath = currentAppPath + ".temp";
 
 	/* download the update */
-	if (!DownloadFile("https://github.com/CS2-OOF-LV/CS2Installer/raw/main/build/CS2Installer.exe", updatedAppPath.c_str())) {
-		puts("failed to download update.");
+	if (!DownloadFile("https://github.com/4kliksAlex/CS2-Downloader-zh_Hans/raw/main/build/CS2-Downloader-zh_Hans.exe", updatedAppPath.c_str())) {
+		puts("下载更新失败。");
 		waitforinput();
 		exit(1);
 	}
@@ -131,7 +133,7 @@ void Downloader::UpdateInstaller() {
 		batchFile.close();
 	}
 	else {
-		puts("failed to create the deletion script.");
+		puts("无法创建删除脚本。");
 		waitforinput();
 		exit(1);
 	}
@@ -148,7 +150,7 @@ void Downloader::UpdateInstaller() {
 		CloseHandle(processInfo.hThread);
 	}
 	else {
-		puts("failed to create the deletion process.");
+		puts("无法创建删除进程。");
 		waitforinput();
 		exit(1);
 	}
@@ -225,7 +227,7 @@ void Downloader::PrepareDownload() {
 	}
 
 	if (!std::filesystem::exists("python-3.11.4-embed-amd64") || !std::filesystem::exists("python-3.11.4-embed-amd64/python.exe")) {
-		puts("python not found. make sure the \"python-3.11.4-embed-amd64\" folder exists and contains python.exe.");
+		puts("未找到python，请确保“python-3.11.4-embed-amd64”文件夹存在并包含python.exe。");
 		waitforinput();
 		exit(1);
 	}
