@@ -11,7 +11,7 @@
 #pragma comment(lib, "wininet.lib")
 
 bool DownloadFile(const char* url, const char* outputFile) { /* currently not using it as bool because i dont need any checks for it at the moment */
-	HINTERNET hInternet = InternetOpenA("FileDownloader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	HINTERNET hInternet = InternetOpenA("FileDownloader", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (!hInternet) {
 		puts("wininet初始化失败。");
 		return false;
@@ -51,7 +51,7 @@ bool DownloadFile(const char* url, const char* outputFile) { /* currently not us
 std::string ReadOnlineString(const char* url) {
 	std::string result = "";
 
-	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+	HINTERNET hInternet = InternetOpenA("URLReader", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (!hInternet) {
 		puts("wininet初始化失败。");
 		return result;
