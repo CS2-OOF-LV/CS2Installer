@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
 		std::filesystem::remove_all("manifestFiles");
 	}
 	puts("清理完毕！");
-	puts("下载完毕！按“Enter”关闭下载程序！");
-	puts("神一般的起源2引擎——源神，启动！");
+	puts("“神一般的起源2引擎——源神，启动！”");
+	puts("下载完毕！按“Enter”关闭下载程序");
 	waitforinput();
 	return 0;
 }
