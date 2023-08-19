@@ -5,9 +5,13 @@
 
 **请 _自备_ 网络代理（或VPN/加速器等），否则可能无法下载**
 
+### 编译信息
+
 编译环境：`g++.exe (Rev7, Built by MSYS2 project) 13.1.0`
 
 点击`build.bat`进行编译，
 编译成品在`build`文件夹里。
+
+### 谁问我了？
 
 ~~关注B站 [4kliksAlex](https://space.bilibili.com/1004361629/) 谢谢谢谢~~
