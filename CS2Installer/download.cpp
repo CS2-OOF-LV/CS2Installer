@@ -163,7 +163,7 @@ void Downloader::PrepareDownload() {
 	/* General Data we need for Preparing */
 	std::filesystem::path currentPath = std::filesystem::current_path();
 	std::filesystem::path localAppData = GetLocalAppData();
-	const char* manifestNames[3] = { "730_2347770", "730_2347771", "730_2347779" };
+	const char* manifestNames[4] = { "730_2347770", "730_2347771", "730_2347774", "730_2347779" };
 	const char* depotKeys = "depot_keys.json";
 
 	if (!Globals::usesNoManifests)
@@ -178,7 +178,7 @@ void Downloader::PrepareDownload() {
 	if (!Globals::usesNoManifests) {
 		int maxIndex = sizeof(manifestNames) / sizeof(manifestNames[0]);
 		for (int downloadIndex = 0; downloadIndex < maxIndex; ++downloadIndex) { /* download our manifest files */
-			std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
+			std::string downloadLink = "https://github.com/4kliksAlex/CS2Installer-Dependencies/raw/main/";
 			downloadLink += manifestNames[downloadIndex];
 
 			std::string downloadPath = "manifestFiles/";
@@ -208,7 +208,7 @@ void Downloader::PrepareDownload() {
 	std::filesystem::create_directory(steamctlDirectory / "steamctl");
 
 	if (/*!Globals::usesNoManifests*/true) {
-		std::string downloadLink = "https://github.com/CS2-OOF-LV/CS2Installer-Dependencies/raw/main/";
+		std::string downloadLink = "https://github.com/4kliksAlex/CS2Installer-Dependencies/raw/main/";
 		downloadLink += depotKeys;
 
 		std::string downloadPath = localAppData.string();
@@ -237,7 +237,7 @@ void Downloader::PrepareDownload() {
 void Downloader::DownloadCS2() {
 	/* General Data we need for Downloading */
 	std::filesystem::path currentPath = std::filesystem::current_path();
-	const char* manifestNames[3] = { "730_2347770", "730_2347771", "730_2347779" };
+	const char* manifestNames[4] = { "730_2347770", "730_2347771", "730_2347774", "730_2347779" };
 
 	std::string stringPath = currentPath.string();
 	std::filesystem::current_path(stringPath.c_str());
